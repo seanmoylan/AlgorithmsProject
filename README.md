@@ -1,21 +1,21 @@
 # MD5 Message Digest
 Lecturer: **Dr Ian McLoughin**
 
-##About</h2>
+## About</h2>
   Context and progress go here
 
-##Goal and requirements
-The goal of this project is to program [The MD5 Message Digest]()
+## Goal and requirements
+The goal of this project is to program - [The MD5 Message Digest Algorithm](https://www.ietf.org/rfc/rfc1321.txt)
 
 - Fundementals of the c programming language 
 - Complexities of Cryptography
 
 
-##Installation
+## Installation
 
 
-##Contributing 
+## Contributing 
 Mention pull requests. Link to an example and/or put it down here
 
-##Project status
+## Project status
  'In Progress'
