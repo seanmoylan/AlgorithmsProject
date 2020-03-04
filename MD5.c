@@ -41,5 +41,29 @@ int main(int argc, char *argv[ ]) {
   }
 
 
+  // Functions (F, G, H, I)
+
+  // --- F Function ---
+  uint32_t F(uint32_t x, uint32_t y, uint32_t z){
+    return (x & y) | (~x & z);
+  }
+
+
+  // --- G Function ---
+  uint32_t G(uint32_t x, uint32_t y, uint32_t z){
+    return (x & z) | (y & ~z);
+  }
+
+
+  // --- H Function ---
+  uint32_t H(uint32_t x, uint32_t y, uint32_t z){
+    return (x ^ y ^ z);
+  }
+
+  // --- I Function ---
+  uint32_t I(uint32_t x, uint32_t y, uint32_t z){
+    return (y ^ (x | ~z));
+  }
+
 
 }
