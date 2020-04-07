@@ -31,28 +31,53 @@
 const uint32_t WORDS[] = {0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476};
 
 
+// Constants for MD5Transform routine
+#define S11 7
+#define S12 12
+#define S13 17
+#define S14 22
+#define S21 5
+#define S22 9
+#define S23 14
+#define S24 20
+#define S31 4
+#define S32 11
+#define S33 16
+#define S34 23
+#define S41 6
+#define S42 10
+#define S43 15
+#define S44 21
+
+static unsigned char PADDING[64] = {
+  0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+
 // Functions (F, G, H, I)
-
 // --- F Function ---
-uint32_t F(uint32_t x, uint32_t y, uint32_t z){
-  return (x & y) | (~x & z);
-}
-
-
+#define F( x,  y,  z) ((x & y) | (~x & z))
 // --- G Function ---
-uint32_t G(uint32_t x, uint32_t y, uint32_t z){
-  return (x & z) | (y & ~z);
-}
-
-
+#define G( x,  y,  z) ((x & z) | (y & ~z))
 // --- H Function ---
-uint32_t H(uint32_t x, uint32_t y, uint32_t z){
-  return (x ^ y ^ z);
+#define H( x,  y,  z) (x ^ y ^ z)
+// --- I Function ---
+#define I( x,  y,  z) (y ^ (x | ~z))
+
+// bit shifting functions for rounds 1, 2, 3, 4
+#define FF(a, b, c, d, m, s, t) { 
+  a += F(b, c, d) + m + t;  a = b + ROTLEFT(a, s); 
 }
 
-// --- I Function ---
-uint32_t I(uint32_t x, uint32_t y, uint32_t z){
-  return (y ^ (x | ~z));
+#define GG(a, b, c, d, m, s, t) { 
+  a += G(b, c, d) + m + t;  a = b + ROTLEFT(a, s); 
+}
+#define HH(a, b, c, d, m, s, t) { 
+  a += H(b, c, d) + m + t;  a = b + ROTLEFT(a, s); 
+}
+#define II(a, b, c, d, m, s, t) { 
+  a += I(b, c, d) + m + t;  a = b + ROTLEFT(a, s); 
 }
 
 
