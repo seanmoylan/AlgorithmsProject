@@ -65,20 +65,13 @@ static unsigned char PADDING[64] = {
 // --- I Function ---
 #define I( x,  y,  z) (y ^ (x | ~z))
 
-// bit shifting functions for rounds 1, 2, 3, 4
-#define FF(a, b, c, d, m, s, t) { 
-  a += F(b, c, d) + m + t;  a = b + ROTLEFT(a, s); 
-}
 
-#define GG(a, b, c, d, m, s, t) { 
-  a += G(b, c, d) + m + t;  a = b + ROTLEFT(a, s); 
-}
-#define HH(a, b, c, d, m, s, t) { 
-  a += H(b, c, d) + m + t;  a = b + ROTLEFT(a, s); 
-}
-#define II(a, b, c, d, m, s, t) { 
-  a += I(b, c, d) + m + t;  a = b + ROTLEFT(a, s); 
-}
+
+// bit shifting functions for rounds 1, 2, 3, 4
+#define FF(a, b, c, d, m, s, t) { a += F(b, c, d) + m + t;  a = b + ROTLEFT(a, s); }
+#define GG(a, b, c, d, m, s, t) { a += G(b, c, d) + m + t;  a = b + ROTLEFT(a, s); }
+#define HH(a, b, c, d, m, s, t) { a += H(b, c, d) + m + t;  a = b + ROTLEFT(a, s); }
+#define II(a, b, c, d, m, s, t) { a += I(b, c, d) + m + t;  a = b + ROTLEFT(a, s); }
 
 
 // Union allows you to store diffrent data types in the same memory address
@@ -92,14 +85,18 @@ union block {
   uint8_t eight[64];
 };
 
+// Used to help nextblock keep track of the status of nextblock
+enum flag {READ, PAD0, FINISH};
+
+
 // Reads in the next block to be processed
-int nextblock(){
+int nextblock(union block *M, FILE *infile, uint64_t *nobits, enum flag *status){
 
 }
 
 
 // Processes the next hash to be computed
-void nexthash(){
+void nexthash(union block *M){
 
 }
 
@@ -116,6 +113,24 @@ int main(int argc, char *argv[ ]) {
   if(!infile){
     printf("Error! Could not open file");
   }
+
+
+  // The current padded message block
+  union block M;
+  uint64_t nobits = 0;
+  enum flag status = READ;
+
+
+  // Read throughall the padded message blocks.
+  while(nextblock(&M, infile, &nobits, &status)){
+    // Calculate the next hash value
+    nexthash(&M);
+  }
+
+  for(int i = 0; i < 8; i++){
+    printf("%02" PRIx32, WORDS[i]);
+  }
+
 
 
 }
