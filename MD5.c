@@ -12,6 +12,9 @@
     x^i     - represents x to the i-th power
     +       - Addition of words(modulo-2^32 addition)
     X <<< s - Circularly shifting X left by s bit positions
+
+  Bitwise Operators
+
     not(X)  - bit-wise complement of X
     X xor Y - bit-wise XOR of X and Y
     XY      - bit-wise AND
@@ -65,5 +68,6 @@ int main(int argc, char *argv[ ]) {
     return (y ^ (x | ~z));
   }
 
+  
 
 }
