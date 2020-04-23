@@ -3,8 +3,7 @@ Lecturer: **Dr Ian McLoughin**
 
 ## About</h2>
   Most of the study done leading to this assesment was covered by online videos,
-  the work from them videos can be found in the [repo](https://github.com/seanmoylan/sha256) 
-  Context and progress go here
+  the work from them videos can be found in this [repo](https://github.com/seanmoylan/sha256) 
 
 ## Goal and requirements
 The goal of this project is to program - [The MD5 Message Digest Algorithm](https://www.ietf.org/rfc/rfc1321.txt)
