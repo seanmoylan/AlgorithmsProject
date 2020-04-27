@@ -247,6 +247,12 @@ void nexthash(union block *M){
 	DIGEST[3] += d;
 }
 
+// 
+void print_usage(){
+	printf("Usage: \n");
+	exit(2);
+}
+
 
 int main(int argc, char *argv[ ]) {
 
