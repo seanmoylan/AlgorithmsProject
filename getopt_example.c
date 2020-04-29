@@ -28,9 +28,14 @@ int main(int argc, char *argv[ ]) {
 	int option;
 	int cflag = 0;
 	int fflag = 0;
+	int tflag = 0;
 
-	while((option = getopt(argc, argv, "c:f:")) != -1){
+	while((option = getopt(argc, argv, "c:f:t:")) != -1){
 		switch(option){
+			case 't':
+				print_farenheit(44.4);
+				exit(0);
+				break;
 			case 'c':
 				if(cflag){
 					print_usage();
@@ -38,6 +43,7 @@ int main(int argc, char *argv[ ]) {
 				}else{
 					cflag++;
 					fflag++;
+					tflag++;
 				}
 				print_centegrade(atof(optarg));
 				break;
@@ -48,9 +54,11 @@ int main(int argc, char *argv[ ]) {
 				}else{
 					fflag++;
 					cflag++;
+					tflag++;
 				}
 				print_farenheit(atof(optarg));
 				break;
+			
 			default:
 				printf("Use -f or -c to convert to centegrade or farenheit\n");
 		}

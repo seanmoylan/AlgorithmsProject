@@ -24,7 +24,9 @@
 - https://tools.ietf.org/html/rfc1321
 - https://www.geeksforgeeks.org/command-line-arguments-in-c-cpp/
 - http://www.gnu.org/software/libc/manual/html_node/Getopt.html
-- 
+- https://www.tutorialspoint.com/unix_commands/getopt.htm
+- http://courses.cms.caltech.edu/cs11/material/general/usage.html
+- https://stackoverflow.com/questions/9642732/parsing-command-line-arguments-in-c
 
 */
 
@@ -33,9 +35,12 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include <unistd.h>
+#include <getopt.h>
 
 // Initialize MD buffers that consistes of 4 32bit integers
 const uint32_t WORDS[] = {0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476};
+const char usage[] = "usage: MD5 - Message Digest Algorithm \n ./md5 <filename> | ./md5 -h \n More again \n and more \n";
+const char test_string[] = "hello world";
 
 uint32_t DIGEST[4];
 
@@ -102,11 +107,14 @@ const uint32_t K[64] = {
 	0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391};
 
 
-// Union allows you to store diffrent data types in the same memory address
-// this union is size 512bits that can be accessed as:
-// 8 x 64 bits
-// 16 x 32 bits
-// 64 x 8 bits
+/* 	
+	Union allows you to store diffrent data types in the same memory address
+	this union is size 512bits that can be accessed as:
+	8 x 64 bits
+ 	16 x 32 bits
+ 	64 x 8 bits
+*/
+
 union block {
 	uint64_t six_four[8];
 	uint32_t three_two[16];
@@ -121,7 +129,7 @@ enum flag {READ, PAD0, FINISH};
 // When we reach the end of the file we check
 int nextblock(union block *M, FILE *infile, uint64_t *nobits, enum flag *status){
 
-  // Breaks while loop in the main method when nextblock is finished
+  	// Breaks while loop in the main method when nextblock is finished
 	if(*status == FINISH)
 		return 0;
 
@@ -137,15 +145,15 @@ int nextblock(union block *M, FILE *infile, uint64_t *nobits, enum flag *status)
 
 
 
-  // Reads 64 x 1bits and stores them in M.eight
-  // fread takes in a pointer to a memory address, the size to be read in bytes,
-  // the number of elements of size bytes and the file to be taken as input.
+  	// Reads 64 x 1bits and stores them in M.eight
+  	// fread takes in a pointer to a memory address, the size to be read in bytes,
+  	// the number of elements of size bytes and the file to be taken as input.
 	size_t nobytesread = fread(M->eight, 1, 64, infile);
 
 	if(nobytesread == 64)
 		return 1;
 
-  // run if all padding can be fit into the last block
+  	// run if all padding can be fit into the last block
 	if(nobytesread < 56){
 		M->eight[nobytesread] = 0x80;
 		for(int i = nobytesread + 1; i < 56; i++)
@@ -161,14 +169,14 @@ int nextblock(union block *M, FILE *infile, uint64_t *nobits, enum flag *status)
 // Processes the next hash to be computed
 void nexthash(union block *M){
 
-  // Initial values of a, b, c, d
+  	// Initial values of a, b, c, d
 	uint32_t a, b, c, d;
 	a = WORDS[0];
 	b = WORDS[1];
 	c = WORDS[2];
 	d = WORDS[3];
 
-  // Round 1 - FF function
+  	// Round 1 - FF function
 	FF(a, b, c, d, M -> three_two[0], S7,   K[0]);
 	FF(d, a, b, c, M -> three_two[1], S12,  K[1]);
 	FF(c, d, a, b, M -> three_two[2], S17,  K[2]);
@@ -186,7 +194,7 @@ void nexthash(union block *M){
 	FF(c, d, a, b, M -> three_two[14], S17, K[14]);
 	FF(b, c, d, a, M -> three_two[15], S22, K[15]);
 
-  // Round 2 - GG function
+  	// Round 2 - GG function
 	GG(a, b, c, d, M -> three_two[1], S5,   K[16]);
 	GG(d, a, b, c, M -> three_two[6], S9,   K[17]);
 	GG(c, d, a, b, M -> three_two[11], S14, K[18]);
@@ -204,7 +212,7 @@ void nexthash(union block *M){
 	GG(c, d, a, b, M -> three_two[7], S14,  K[30]);
 	GG(b, c, d, a, M -> three_two[12], S20, K[31]);
 
-  // Round 3 - HH function
+  	// Round 3 - HH function
 	HH(a, b, c, d, M -> three_two[5], S4,   K[32]);
 	HH(d, a, b, c, M -> three_two[8], S11,  K[33]);
 	HH(c, d, a, b, M -> three_two[11], S16, K[34]);
@@ -222,7 +230,7 @@ void nexthash(union block *M){
 	HH(c, d, a, b, M -> three_two[15], S16, K[46]);
 	HH(b, c, d, a, M -> three_two[2], S23,  K[47]);
 
-  // Round 4 - II function
+  	// Round 4 - II function
 	II(a, b, c, d, M -> three_two[0], S6,   K[48]);
 	II(d, a, b, c, M -> three_two[7], S10,  K[49]);
 	II(c, d, a, b, M -> three_two[14], S15, K[50]);
@@ -247,28 +255,46 @@ void nexthash(union block *M){
 	DIGEST[3] += d;
 }
 
-// 
+// usage message
 void print_usage(){
-	printf("Usage: \n");
-	exit(2);
+	//printf("usage: MD5 - Message Digest Algorithm \n");
+	printf("%s\n", usage);
+	exit(0);
 }
 
 
 int main(int argc, char *argv[ ]) {
 
-  // Read in file for message digest
+	int option;
 
+	// If argc = 1 then the user has only given the program name
+	// A usage message should be given to the user when they either
+	// pass incorrect args or incorrect number of args
 
-
-	if(argc != 2){
-  	// Show error and stop exectuion of program
-		printf("Error! Expected single file as argument. \n");
-		return 1;
+	if (argc == 1){
+		print_usage();
+		exit(0);
 	}
 
-	if(argv[0] == "--help"){
-		printf("Help options go here");
+
+	// Using getopt to manage command line arguments
+	while((option = getopt(argc, argv, "c:f:t:h")) != -1){
+		switch(option){
+			// used for running MD5 against a pre defined string as a test
+			case 't':
+				// this code will run when --test is called
+				printf("You have chosen t\n");
+				//(0);
+				break;
+			case 'h':
+				printf("You want help\n");
+				exit(0);
+				break;
+			default:
+				print_usage();
+		}
 	}
+	
 
 	FILE *infile = fopen(argv[1], "rb");
 	if(!infile){
@@ -282,15 +308,21 @@ int main(int argc, char *argv[ ]) {
 	enum flag status = READ;
 
 
-  	// Read throughall the padded message blocks.
+  	// Read through all the padded message blocks.
 	while(nextblock(&M, infile, &nobits, &status)){
-    // Calculate the next hash value
+    	// Calculate the next hash value
 		nexthash(&M);
 	}
 
-	for(int i = 0; i < 8; i++){
+	printf("MD5(%s): ", argv[1]);
+	// Print Message Digest
+	for(int i = 0; i < 4; i++){
 		printf("%02" PRIx32, DIGEST[i]);
 	}
+	printf("\n");
+	
+
+	return 0;
 
 
 
