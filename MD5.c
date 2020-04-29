@@ -33,6 +33,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <inttypes.h>
 #include <unistd.h>
 #include <getopt.h>
@@ -259,13 +260,16 @@ void nexthash(union block *M){
 void print_usage(){
 	//printf("usage: MD5 - Message Digest Algorithm \n");
 	printf("%s\n", usage);
-	exit(0);
+	//exit(0);
 }
 
 
-int main(int argc, char *argv[ ]) {
+int main(int argc, char *argv[]) {
 
-	int option;
+	int option_index;
+	char *input_string;
+
+	FILE *infile = NULL;
 
 	// If argc = 1 then the user has only given the program name
 	// A usage message should be given to the user when they either
@@ -278,27 +282,38 @@ int main(int argc, char *argv[ ]) {
 
 
 	// Using getopt to manage command line arguments
-	while((option = getopt(argc, argv, "c:f:t:h")) != -1){
-		switch(option){
+	while((option_index = getopt(argc, argv, "hts:")) != -1){
+		switch(option_index){
 			// used for running MD5 against a pre defined string as a test
 			case 't':
 				// this code will run when --test is called
 				printf("You have chosen t\n");
+				print_usage();
 				//(0);
 				break;
 			case 'h':
 				printf("You want help\n");
-				exit(0);
+				print_usage();
+				//exit(0);
 				break;
+			case 's':
+				input_string = optarg;
+				printf("File given as input: %s\n", input_string);
+				infile = fopen(input_string, "rb");
+				//exit(0);
+				break;
+				//exit(0);
 			default:
 				print_usage();
+				return 1;
 		}
 	}
 	
 
-	FILE *infile = fopen(argv[1], "rb");
+	 
 	if(!infile){
-		printf("Error! Could not open file");
+		printf("Error! Could not open file\n");
+		return 1;
 	}
 
 
@@ -314,8 +329,8 @@ int main(int argc, char *argv[ ]) {
 		nexthash(&M);
 	}
 
-	printf("MD5(%s): ", argv[1]);
 	// Print Message Digest
+	printf("MD5(%s): ", input_string);
 	for(int i = 0; i < 4; i++){
 		printf("%02" PRIx32, DIGEST[i]);
 	}
