@@ -41,7 +41,7 @@
 // Initialize MD buffers that consistes of 4 32bit integers
 const uint32_t WORDS[] = {0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476};
 const char usage[] = "usage: MD5 - Message Digest Algorithm \n ./md5 <filename> | ./md5 -h \n More again \n and more \n";
-const char test_string[] = "hello world";
+const char test_filename[] = "hello.txt";
 
 uint32_t DIGEST[4];
 
@@ -271,6 +271,11 @@ int main(int argc, char *argv[]) {
 
 	FILE *infile = NULL;
 
+	// The current padded message block
+	union block M;
+	uint64_t nobits = 0;
+	enum flag status = READ;
+
 	// If argc = 1 then the user has only given the program name
 	// A usage message should be given to the user when they either
 	// pass incorrect args or incorrect number of args
@@ -282,27 +287,26 @@ int main(int argc, char *argv[]) {
 
 
 	// Using getopt to manage command line arguments
-	while((option_index = getopt(argc, argv, "hts:")) != -1){
+	while((option_index = getopt(argc, argv, "hto:")) != -1){
 		switch(option_index){
 			// used for running MD5 against a pre defined string as a test
 			case 't':
 				// this code will run when --test is called
-				printf("You have chosen t\n");
-				print_usage();
-				//(0);
+				printf("MD5 Digest for input string: hello world\n");
+				infile = fopen(test_filename, "rb");
+				printf("MD5(%s): ", test_filename);
+				
 				break;
 			case 'h':
 				printf("You want help\n");
 				print_usage();
-				//exit(0);
 				break;
-			case 's':
+			case 'o':
 				input_string = optarg;
 				printf("File given as input: %s\n", input_string);
 				infile = fopen(input_string, "rb");
-				//exit(0);
+				printf("MD5(%s): ", input_string);
 				break;
-				//exit(0);
 			default:
 				print_usage();
 				return 1;
@@ -317,12 +321,6 @@ int main(int argc, char *argv[]) {
 	}
 
 
-  	// The current padded message block
-	union block M;
-	uint64_t nobits = 0;
-	enum flag status = READ;
-
-
   	// Read through all the padded message blocks.
 	while(nextblock(&M, infile, &nobits, &status)){
     	// Calculate the next hash value
@@ -330,7 +328,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Print Message Digest
-	printf("MD5(%s): ", input_string);
+	
 	for(int i = 0; i < 4; i++){
 		printf("%02" PRIx32, DIGEST[i]);
 	}
