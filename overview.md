@@ -151,7 +151,7 @@ Simplistically speaking there are just 5 steps to the MD5 algorithm tho each com
 
 The MD5 algorithm was initially designed to be a cryptographic hash function but was later found to have "extensive vulnerablities". That said it is still used to this day to varify document integrity. 
 
-Cryptanalytic research published in 1996 showed a possible weakness in MD5 through a collision attack. It was not until december of 2004, Dan Kaminsky published his finding that the MD5 Algorithm had a hash collision weakness. What he found was there were more then one possible inputs to obtain the same checksum from the MD5 algorithm. Unfortunatly what this means is hackers can take advantage of this and substitute a innocent message that has been digitaly signed with a malicious one, leaving users of MD5 vulnerable to attacks. The way in which hackers would cause harm using this technique is by using forged data on software that used MD5 to then incorrectly identify themselves as trustworthy 
+Cryptanalytic research published in 1996 showed a possible weakness in MD5 through a collision attack. It was not until December of 2004, Dan Kaminsky published his finding that the MD5 Algorithm had a hash collision weakness. What he found was there were more then one possible inputs to obtain the same checksum from the MD5 algorithm. Unfortunately what this means is hackers can take advantage of this and substitute a innocent message that has been digitally signed with a malicious one, leaving users of MD5 vulnerable to attacks. The way in which hackers would cause harm using this technique is by using forged data on software that used MD5 to then incorrectly identify themselves as trustworthy 
 
 ## References
 

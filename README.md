@@ -9,7 +9,7 @@ This repo contains an assignment given to me as part of Theory of Algorithms mod
 
 In the assignment I was asked to write in the C Programming language a program that could compute the Message Digest 5 (MD5) hash. The file MD5.c contains my implementation of the algorithm, MD5.exe is a compiled version of the program that can be run from the terminal but if you wish to compile and run it yourself please see instructions below. 
 
-For a full breakdown of this repo navigate to the file overview.md where i give a through breakdown of the algorithm, how to run, the complexities and all the referneces i used in completing this assignment.
+For a full breakdown of this repo navigate to the file overview.md where I give a through breakdown of the algorithm, how to run, the complexities and all the references I used in completing this assignment.
 
 ## Run
 
