@@ -40,7 +40,7 @@
 
 // Initialize MD buffers that consistes of 4 32bit integers
 const uint32_t WORDS[] = {0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476};
-const char usage[] = "usage: MD5 - Message Digest Algorithm \n ./md5 <filename> | ./md5 -h \n More again \n and more \n";
+const char usage[] = "usage:  MD5 - Message Digest Algorithm \n  ./md5 -t | ./md5 -o <filename> | ./MD5 -h \n\n  -o followed by the <filename> you wish to hash \n  -t runs MD5 on 'hello world' string \n  -h will output the usage message for help using the program \n\n";
 const char test_filename[] = "hello.txt";
 
 uint32_t DIGEST[4];
@@ -289,18 +289,21 @@ int main(int argc, char *argv[]) {
 	// Using getopt to manage command line arguments
 	while((option_index = getopt(argc, argv, "hto:")) != -1){
 		switch(option_index){
-			// used for running MD5 against a pre defined string as a test
+			// -t 
 			case 't':
 				// this code will run when --test is called
-				printf("MD5 Digest for input string: hello world\n");
+				printf("Running MD5 on `hello world` as input.\n");
 				infile = fopen(test_filename, "rb");
+
+				// Print the file the test was carried out on to the user
 				printf("MD5(%s): ", test_filename);
-				
 				break;
 			case 'h':
-				printf("You want help\n");
 				print_usage();
+				return 1;
 				break;
+			// -o requires a file name to be given as an argument
+			// if file cant be open user is notified and usage message printed
 			case 'o':
 				input_string = optarg;
 				printf("File given as input: %s\n", input_string);
@@ -317,6 +320,7 @@ int main(int argc, char *argv[]) {
 	 
 	if(!infile){
 		printf("Error! Could not open file\n");
+		print_usage();
 		return 1;
 	}
 
