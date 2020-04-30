@@ -40,7 +40,7 @@
 
 // Initialize MD buffers that consistes of 4 32bit integers
 const uint32_t WORDS[] = {0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476};
-const char usage[] = "usage:  MD5 - Message Digest Algorithm \n  ./md5 -t | ./md5 -o <filename> | ./MD5 -h \n\n  -o followed by the <filename> you wish to hash \n  -t runs MD5 on 'hello world' string \n  -h will output the usage message for help using the program \n\n";
+const char usage[] = "usage:  MD5 - Message Digest Algorithm \n  ./md5 -t | ./md5 -o <filename> | ./MD5 -h \n\n  -o followed by the <filename> you wish to hash \n  -t runs a MD5 test on 'hello world' as input  \n  -h will output the usage message for help using the program \n\n";
 const char test_filename[] = "hello.txt";
 
 uint32_t DIGEST[4];
@@ -269,6 +269,10 @@ int main(int argc, char *argv[]) {
 	int option_index;
 	char *input_string;
 
+	int tflag = 0;
+	int hflag = 0;
+	int oflag = 0;
+
 	FILE *infile = NULL;
 
 	// The current padded message block
@@ -291,24 +295,32 @@ int main(int argc, char *argv[]) {
 		switch(option_index){
 			// -t 
 			case 't':
+				
 				// this code will run when --test is called
 				printf("Running MD5 on `hello world` as input.\n");
 				infile = fopen(test_filename, "rb");
 
 				// Print the file the test was carried out on to the user
 				printf("MD5(%s): ", test_filename);
+				
+				
 				break;
 			case 'h':
+				
 				print_usage();
 				return 1;
+				
 				break;
 			// -o requires a file name to be given as an argument
 			// if file cant be open user is notified and usage message printed
 			case 'o':
+			
 				input_string = optarg;
 				printf("File given as input: %s\n", input_string);
 				infile = fopen(input_string, "rb");
 				printf("MD5(%s): ", input_string);
+				
+				
 				break;
 			default:
 				print_usage();

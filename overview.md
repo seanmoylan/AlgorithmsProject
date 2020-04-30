@@ -5,11 +5,9 @@ Author: Sean Moylan
 
 In 1991 [Ronald Rivest](https://en.wikipedia.org/wiki/Ron_Rivest) created the MD5 message-digest algorithm that generates a unique 128-bit digital signature from a given input message (file) known as the message-digest.
 
-Contained in this repository is my own vesion of the MD5 alogrithm that was an assignment given to me as part of the Theory of Algorithms module completed during 4th year Software Development in GMIT.
+Contained in this repository is my own version of the MD5 algorithm that was an assignment given to me as part of the Theory of Algorithms module completed during 4th year Software Development in GMIT.
 
 You will find MD5.c where I have recreated the MD5 algorithm from the original standard. You will also find MD5.exe which is a executable version of the program that can be run from the terminal. For testing perposes I have added a file named hello.txt that contains the test string "hello world".
-
-The MD5 algorithm was initially designed to be a cryptographic hash function but was later found to have "extensive vulnerablities". That said it is still used to this day to varify document integrity. 
 
 Please find instructions below for how to run the code found in this repository along with a thorough breakdown of the algorithm and its complexities in my own words.
 
@@ -151,7 +149,9 @@ Simplistically speaking there are just 5 steps to the MD5 algorithm tho each com
 
 ## Complexity
 
+The MD5 algorithm was initially designed to be a cryptographic hash function but was later found to have "extensive vulnerablities". That said it is still used to this day to varify document integrity. 
 
+Cryptanalytic research published in 1996 showed a possible weakness in MD5 through a collision attack. It was not until december of 2004, Dan Kaminsky published his finding that the MD5 Algorithm had a hash collision weakness. What he found was there were more then one possible inputs to obtain the same checksum from the MD5 algorithm. Unfortunatly what this means is hackers can take advantage of this and substitute a innocent message that has been digitaly signed with a malicious one, leaving users of MD5 vulnerable to attacks. The way in which hackers would cause harm using this technique is by using forged data on software that used MD5 to then incorrectly identify themselves as trustworthy 
 
 ## References
 
@@ -160,9 +160,11 @@ Simplistically speaking there are just 5 steps to the MD5 algorithm tho each com
 - https://www.tutorialspoint.com/cprogramming/index.htm 
   - Familiarise myself with c 
 - https://github.com/ianmcloughlin?tab=repositories&q=&type=&language=c 
-  - Ian's c repos including sha256 which was layed out step by step throughout the semester along with helpful code on hash functions and bit-wise operations
+  - Ian's c repos including sha256 which was laid out step by step throughout the semester along with helpful code on hash functions and bit-wise operations
 - https://www.geeksforgeeks.org/union-c/ 
   -  Better understanding of unions in c
+- https://en.wikipedia.org/wiki/MD5
+  - General information on MD5
 - https://www.geeksforgeeks.org/command-line-arguments-in-c-cpp/ 
   - Manipulation of commarnd line arguments in c
 - http://www.gnu.org/software/libc/manual/html_node/Getopt.html 
@@ -183,3 +185,7 @@ Simplistically speaking there are just 5 steps to the MD5 algorithm tho each com
   - Guide to install GCC on windows
 - https://kl2217.wordpress.com/2011/07/21/common-hashing-algorithms/
   - Site used to obtain visual representation of a round in the algorithm
+- https://www.securityfocus.com/bid/11849/info
+  - Report outlining the hash collision weakness of MD5
+- https://www.kb.cert.org/vuls/id/836068/
+  - 
